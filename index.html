@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Meet Rotativo | Enlaces y Video Tutorial</title>
+    <!-- Fuentes modernas -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (iconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a2f3a 0%, #1b6b6b 100%);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Fondo animado */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 245, 0.2);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: floatParticle linear infinite;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Contenedor principal */
+        .cards-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            perspective: 1000px;
+        }
+
+        /* Tarjeta mejorada */
+        .meet-card {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            width: 350px;
+            padding: 1.5rem 1.5rem 1.8rem;
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.4);
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(35px);
+            animation: cardRise 0.55s forwards;
+            animation-delay: calc(var(--order, 0) * 0.12s);
+            border: 1px solid rgba(255,255,210,0.3);
+        }
+
+        @keyframes cardRise {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .meet-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 32px 48px -16px rgba(0, 0, 0, 0.45);
+            background: #ffffff;
+        }
+
+        /* Icono Meet */
+        .icon-meet {
+            background: linear-gradient(145deg, #1e7b85, #0b5a63);
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 28px;
+            margin: 0 auto 1rem;
+            box-shadow: 0 12px 18px -8px rgba(0,0,0,0.25);
+            transition: transform 0.2s;
+        }
+        .meet-card:hover .icon-meet {
+            transform: scale(1.03);
+        }
+        .icon-meet i {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        /* Títulos */
+        .card-title {
+            font-size: 1.55rem;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            background: linear-gradient(125deg, #12424e, #07343e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Bloque de fecha rotativa */
+        .date-rotator {
+            background: #eef4f7;
+            border-radius: 60px;
+            padding: 0.6rem 0.8rem;
+            margin: 1rem 0 0.8rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-left: 4px solid #2c8f7a;
+            transition: all 0.2s;
+        }
+        .date-rotator i {
+            color: #1f7b6e;
+            font-size: 1rem;
+        }
+        .date-value {
+            font-family: 'Inter', monospace;
+            background: white;
+            padding: 0.2rem 0.9rem;
+            border-radius: 40px;
+            color: #0a4b4b;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        /* Anotación / Nota dinámica */
+        .annotation-box {
+            background: #fff7e5;
+            border-radius: 1.2rem;
+            padding: 0.8rem 0.9rem;
+            margin: 0.9rem 0 1rem;
+            font-size: 0.8rem;
+            color: #3a5c5c;
+            border-left: 3px solid #ffb347;
+            text-align: left;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            transition: background 0.2s;
+        }
+        .annotation-box i {
+            color: #e2922b;
+            font-size: 0.9rem;
+            margin-top: 2px;
+        }
+        .annotation-text {
+            line-height: 1.35;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .meet-badge {
+            display: inline-block;
+            background: #e2f0f0;
+            padding: 0.25rem 1rem;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #116b6b;
+            margin: 0.4rem 0;
+        }
+
+        .btn-meet {
+            background: #0e4f5c;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.25s;
+            margin-top: 0.4rem;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-meet:hover {
+            background: #0a6f73;
+            gap: 12px;
+            transform: scale(0.98);
+        }
+
+        .link-preview {
+            font-size: 0.65rem;
+            color: #54828a;
+            margin-top: 1rem;
+            word-break: break-all;
+            background: #f1f8fa;
+            padding: 5px 8px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            max-width: 100%;
+            transition: 0.1s;
+        }
+
+        /* ESTILO DEL ENLACE DE VIDEO (NUEVO) */
+        .video-link-container {
+            margin-top: 1.2rem;
+            border-top: 1px dashed rgba(31, 123, 110, 0.3);
+            padding-top: 1rem;
+        }
+        .video-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(90deg, #ff6b6b, #e05a5a);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 8px 18px;
+            border-radius: 50px;
+            transition: all 0.25s ease;
+            box-shadow: 0 5px 12px rgba(220, 70, 70, 0.3);
+            border: none;
+            cursor: pointer;
+            width: fit-content;
+            margin: 0 auto;
+        }
+        .video-link i {
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+        .video-link:hover {
+            background: linear-gradient(90deg, #ff5252, #c33);
+            transform: scale(1.02);
+            gap: 12px;
+            box-shadow: 0 8px 18px rgba(200, 50, 50, 0.4);
+        }
+        .video-link:hover i {
+            transform: scale(1.1);
+        }
+        .small-note {
+            font-size: 0.65rem;
+            color: #6f9ea8;
+            margin-top: 6px;
+            display: block;
+        }
+
+        .footer-note {
+            position: fixed;
+            bottom: 14px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 10;
+            font-size: 0.7rem;
+            color: rgba(255,250,210,0.8);
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(8px);
+            width: fit-content;
+            margin: 0 auto;
+            padding: 5px 18px;
+            border-radius: 60px;
+            pointer-events: none;
+        }
+
+        @media (max-width: 800px) {
+            .meet-card { width: 300px; padding: 1.2rem; }
+            .card-title { font-size: 1.3rem; }
+            .date-rotator { font-size: 0.8rem; }
+            .video-link { font-size: 0.75rem; padding: 6px 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="animated-bg" id="particleCanvas"></div>
+
+<div class="cards-container">
+    <!-- Tarjeta 1: REUNIÓN POR PLANA -->
+    <div class="meet-card" data-order="0" data-url="https://script.google.com/a/macros/sacooliveros.edu.pe/s/AKfycbyPz-eD9HynDpwAlLJiCj9vdbjdO_L5spmefKhc3EO5goq1ZJRgXeqySuU8aSza-Dex/exec">
+        <div class="icon-meet"><i class="fab fa-google"></i></div>
+        <h2 class="card-title">🔹 REUNIÓN POR PLANA</h2>
+        <div class="meet-badge"><i class="fas fa-calendar-alt"></i> Enlace activo</div>
+
+        <!-- Fecha rotativa -->
+        <div class="date-rotator">
+            <i class="fas fa-sync-alt fa-fw"></i>
+            <span>📅 Próxima fecha:</span>
+            <span class="date-value" id="date-meet1">--/--/----</span>
+        </div>
+
+        <!-- Anotación dinámica -->
+        <div class="annotation-box" id="anno-meet1">
+            <i class="fas fa-info-circle"></i>
+            <div class="annotation-text">Cargando programación rotativa...</div>
+        </div>
+
+        <button class="btn-meet action-btn"><i class="fas fa-door-open"></i> Unirse a la reunión</button>
+        <div class="link-preview"><i class="fas fa-link"></i> <span>Acceso directo</span></div>
+
+        <!-- ENLACE DE VIDEO (ABajo) -->
+        <div class="video-link-container">
+            <a href="#" class="video-link" target="_blank" data-video="tutorial-general">
+                <i class="fab fa-youtube"></i> Ver video informativo
+            </a>
+            <div class="small-note"><i class="fas fa-play-circle"></i> Tutorial y guía de acceso</div>
+        </div>
+    </div>
+
+    <!-- Tarjeta 2: REUNIÓN DE ÁREA Y PLANA -->
+    <div class="meet-card" data-order="1" data-url="https://script.google.com/macros/s/AKfycbydR_00QGM0mAvrw1F1vEaEqKOO1UjWgE5BHlt6RKXBNKCgxJwBir_z3eFVjVQQy_NV/exec">
+        <div class="icon-meet"><i class="fab fa-google"></i></div>
+        <h2 class="card-title">🔹 REUNIÓN DE ÁREA Y PLANA</h2>
+        <div class="meet-badge"><i class="fas fa-chalkboard-user"></i> Colaboración</div>
+        <div class="date-rotator">
+            <i class="fas fa-sync-alt fa-fw"></i>
+            <span>📅 Próxima fecha:</span>
+            <span class="date-value" id="date-meet2">--/--/----</span>
+        </div>
+        <div class="annotation-box" id="anno-meet2">
+            <i class="fas fa-info-circle"></i>
+            <div class="annotation-text">Cargando programación rotativa...</div>
+        </div>
+        <button class="btn-meet action-btn"><i class="fas fa-door-open"></i> Unirse a la reunión</button>
+        <div class="link-preview"><i class="fas fa-link"></i> <span>Acceso directo</span></div>
+
+        <div class="video-link-container">
+            <a href="#" class="video-link" target="_blank" data-video="tutorial-area">
+                <i class="fab fa-youtube"></i> Ver video explicativo
+            </a>
+            <div class="small-note"><i class="fas fa-play-circle"></i> Tips para reuniones efectivas</div>
+        </div>
+    </div>
+
+    <!-- Tarjeta 3: REUNIÓN GENERAL -->
+    <div class="meet-card" data-order="2" data-url="https://script.google.com/a/macros/sacooliveros.edu.pe/s/AKfycbyi-1KjsU86rkMz5Pu610lUpGpLD4Kr3qdlmmveXbuRjpq4VuwlWOsirOmzYRto18d7/exec">
+        <div class="icon-meet"><i class="fab fa-google"></i></div>
+        <h2 class="card-title">🔹 REUNIÓN GENERAL</h2>
+        <div class="meet-badge"><i class="fas fa-users"></i> Todos los equipos</div>
+        <div class="date-rotator">
+            <i class="fas fa-sync-alt fa-fw"></i>
+            <span>📅 Próxima fecha:</span>
+            <span class="date-value" id="date-meet3">--/--/----</span>
+        </div>
+        <div class="annotation-box" id="anno-meet3">
+            <i class="fas fa-info-circle"></i>
+            <div class="annotation-text">Cargando programación rotativa...</div>
+        </div>
+        <button class="btn-meet action-btn"><i class="fas fa-door-open"></i> Unirse a la reunión</button>
+        <div class="link-preview"><i class="fas fa-link"></i> <span>Acceso directo</span></div>
+
+        <div class="video-link-container">
+            <a href="#" class="video-link" target="_blank" data-video="tutorial-general2">
+                <i class="fab fa-youtube"></i> Ver video informativo
+            </a>
+            <div class="small-note"><i class="fas fa-play-circle"></i> Guía rápida para participantes</div>
+        </div>
+    </div>
+</div>
+
+<div class="footer-note">
+    <i class="fas fa-hourglass-half"></i> Las fechas rotan automáticamente según ciclo planificado. Videos tutoriales disponibles.
+</div>
+
+<script>
+    (function() {
+        // ----------------------------------------------------------------
+        // 1. CONFIGURACIÓN DE FECHAS ROTATIVAS Y ANOTACIONES
+        // ----------------------------------------------------------------
+        const reunionesData = {
+            meet1: {   
+                nombre: "REUNIÓN POR PLANA",
+                fechas: [
+                    "2026-06-10", "2026-06-24", "2026-07-08", "2026-07-22", "2026-08-05"
+                ]
+            },
+            meet2: {   
+                nombre: "REUNIÓN DE ÁREA Y PLANA",
+                fechas: [
+                    //"2026-06-03", "2026-06-17", "2026-07-01", "2026-07-15", "2026-07-29", "2026-08-12"
+                ]
+            },
+            meet3: {   
+                nombre: "REUNIÓN GENERAL",
+                fechas: [
+                    "2026-06-05", "2026-06-19", "2026-07-03", "2026-07-17", "2026-07-31", "2026-08-14"
+                ]
+            }
+        };
+
+        // URL de videos (diferentes para cada tarjeta, pero se pueden personalizar)
+        // Usaremos videos de ejemplo de YouTube (tutoriales genéricos sobre reuniones efectivas)
+        // Pueden reemplazarse por cualquier enlace deseado.
+        const videoUrls = {
+            meet1: "https://youtu.be/382duvneppo",   // placeholder ejemplo (video famoso)
+            meet2: "https://youtu.be/382duvneppo",   // ejemplo: tips para reuniones
+            meet3: "https://youtu.be/382duvneppo"    // ejemplo: cómo usar Google Meet
+        };
+        // Nota: los enlaces de arriba son demostrativos; se pueden cambiar por links reales de la institución.
+
+        // Formatear fecha
+        function formatDateHuman(dateStr) {
+            if (!dateStr) return "No definida";
+            const parts = dateStr.split('-');
+            if (parts.length !== 3) return dateStr;
+            const fecha = new Date(Date.UTC(parts[0], parts[1]-1, parts[2]));
+            if (isNaN(fecha)) return dateStr;
+            const day = fecha.getUTCDate().toString().padStart(2,'0');
+            const month = (fecha.getUTCMonth()+1).toString().padStart(2,'0');
+            const year = fecha.getUTCFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        function getNextFecha(fechasArray) {
+            if (!fechasArray || fechasArray.length === 0) return null;
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const fechasObj = fechasArray.map(f => {
+                const [y,m,d] = f.split('-').map(Number);
+                return { str: f, dateObj: new Date(Date.UTC(y, m-1, d)) };
+            });
+            const futuras = fechasObj.filter(item => item.dateObj >= today);
+            if (futuras.length > 0) {
+                futuras.sort((a,b) => a.dateObj - b.dateObj);
+                return futuras[0].str;
+            } else {
+                return fechasArray[0];
+            }
+        }
+
+        function generarAnotacion(fechaProximaStr, reunionKey) {
+            if (!fechaProximaStr) return "Próximamente se definirán nuevas fechas.";
+            const fechaObj = new Date(Date.UTC(...fechaProximaStr.split('-').map(Number)));
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const diffDays = Math.ceil((fechaObj - today) / (1000 * 3600 * 24));
+            
+            let mensajeBase = "";
+            if (reunionKey === 'meet1') mensajeBase = "📌 Reunión de plana directiva. ";
+            else if (reunionKey === 'meet2') mensajeBase = "📌 Articulación de áreas y plana. ";
+            else mensajeBase = "📌 Asamblea general abierta. ";
+            
+            if (diffDays < 0) {
+                mensajeBase += `La próxima fecha rotará al siguiente ciclo. Se mostrará la más reciente del calendario.`;
+            } else if (diffDays === 0) {
+                mensajeBase += `🎯 ¡HOY ES LA REUNIÓN! Conéctate puntualmente.`;
+            } else if (diffDays === 1) {
+                mensajeBase += `⏳ Mañana es la reunión (${formatDateHuman(fechaProximaStr)}). Prepárate.`;
+            } else if (diffDays <= 3) {
+                mensajeBase += `🔜 La reunión será en ${diffDays} días (${formatDateHuman(fechaProximaStr)}).`;
+            } else if (diffDays <= 7) {
+                mensajeBase += `📅 Próxima fecha: ${formatDateHuman(fechaProximaStr)} (en ${diffDays} días). Marca tu agenda.`;
+            } else {
+                mensajeBase += `🗓️ Próximo encuentro: ${formatDateHuman(fechaProximaStr)}. Las fechas rotan según programación.`;
+            }
+            mensajeBase += ` El sistema muestra siempre la siguiente reunión. Las fechas irán rotando automáticamente.`;
+            return mensajeBase;
+        }
+
+        function actualizarRotacion() {
+            for (let key of ['meet1', 'meet2', 'meet3']) {
+                const data = reunionesData[key];
+                if (data) {
+                    const nextDate = getNextFecha(data.fechas);
+                    const dateSpan = document.getElementById(`date-${key}`);
+                    const annoDiv = document.getElementById(`anno-${key}`);
+                    if (dateSpan && nextDate) {
+                        dateSpan.innerHTML = formatDateHuman(nextDate);
+                        dateSpan.setAttribute('title', `Próxima reunión: ${nextDate}`);
+                    }
+                    if (annoDiv) {
+                        const anotacionTexto = generarAnotacion(nextDate, key);
+                        const textContainer = annoDiv.querySelector('.annotation-text');
+                        if (textContainer) textContainer.innerHTML = anotacionTexto;
+                    }
+                }
+            }
+        }
+
+        // 2. ASIGNAR ENLACES DE VIDEO (reales) a cada <a>
+        function asignarVideos() {
+            // Tarjeta 1 -> meet1
+            const card1 = document.querySelector('.meet-card[data-order="0"]');
+            if (card1) {
+                const videoLink1 = card1.querySelector('.video-link');
+                if (videoLink1) videoLink1.href = videoUrls.meet1;
+            }
+            // Tarjeta 2
+            const card2 = document.querySelector('.meet-card[data-order="1"]');
+            if (card2) {
+                const videoLink2 = card2.querySelector('.video-link');
+                if (videoLink2) videoLink2.href = videoUrls.meet2;
+            }
+            // Tarjeta 3
+            const card3 = document.querySelector('.meet-card[data-order="2"]');
+            if (card3) {
+                const videoLink3 = card3.querySelector('.video-link');
+                if (videoLink3) videoLink3.href = videoUrls.meet3;
+            }
+        }
+
+        // 3. EVENTOS DE BOTONES Y PREVIEWS
+        function bindEvents() {
+            const cards = document.querySelectorAll('.meet-card');
+            cards.forEach(card => {
+                const url = card.getAttribute('data-url');
+                if (!url) return;
+                
+                const btn = card.querySelector('.btn-meet');
+                const linkPreview = card.querySelector('.link-preview');
+                
+                function openLink(e) {
+                    if(e) e.stopPropagation();
+                    if(url) window.open(url, '_blank', 'noopener,noreferrer');
+                }
+                
+                if(btn) btn.addEventListener('click', openLink);
+                if(linkPreview) {
+                    linkPreview.style.cursor = 'pointer';
+                    linkPreview.addEventListener('click', openLink);
+                }
+                card.addEventListener('click', (e) => {
+                    if(e.target.closest('.btn-meet') || e.target.closest('.link-preview') || e.target.closest('.video-link')) return;
+                    openLink(e);
+                });
+                card.style.cursor = 'pointer';
+            });
+        }
+
+        function enhancePreviews() {
+            const cards = document.querySelectorAll('.meet-card');
+            cards.forEach(card => {
+                const url = card.getAttribute('data-url');
+                const previewSpan = card.querySelector('.link-preview span');
+                if(previewSpan && url) {
+                    let shortUrl = url.length > 48 ? url.substring(0, 45) + '...' : url;
+                    previewSpan.textContent = shortUrl;
+                    previewSpan.title = url;
+                }
+            });
+        }
+
+        // Partículas de fondo
+        function createParticles() {
+            const container = document.getElementById('particleCanvas');
+            if(!container) return;
+            for(let i=0;i<70;i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                let size = Math.random() * 12 + 3;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = Math.random() * 12 + 5 + 's';
+                p.style.animationDelay = Math.random() * 8 + 's';
+                p.style.background = `radial-gradient(circle, rgba(200,240,230,0.5), rgba(90,190,160,0.2))`;
+                container.appendChild(p);
+            }
+        }
+
+        function initialGlow() {
+            const cards = document.querySelectorAll('.meet-card');
+            cards.forEach((card, idx) => {
+                setTimeout(() => {
+                    card.style.transition = 'box-shadow 0.25s';
+                    card.style.boxShadow = '0 0 0 2px #ffdc9f, 0 20px 35px -10px #00000040';
+                    setTimeout(() => {
+                        card.style.boxShadow = '';
+                    }, 400);
+                }, idx * 100 + 200);
+            });
+        }
+
+        // Verificar cambio de día para actualizar rotación
+        let lastDateChecked = new Date().toDateString();
+        function checkDateChange() {
+            const todayStr = new Date().toDateString();
+            if(todayStr !== lastDateChecked) {
+                lastDateChecked = todayStr;
+                actualizarRotacion();
+            }
+        }
+        setInterval(checkDateChange, 60000);
+        document.addEventListener('visibilitychange', () => {
+            if(!document.hidden) actualizarRotacion();
+        });
+
+        // Inicialización completa
+        function init() {
+            createParticles();
+            actualizarRotacion();
+            asignarVideos();      // Asigna los enlaces de YouTube reales
+            bindEvents();
+            enhancePreviews();
+            initialGlow();
+        }
+        
+        init();
+    })();
+</script>
+</body>
+</html>
