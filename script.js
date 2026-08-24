@@ -88,7 +88,7 @@ function actualizarTarjetas() {
             messageText.innerHTML = '⚠️ No hay fechas programadas. Contacta al administrador.';
         } else if (esHoy) {
             messageDiv.className = 'info-message today';
-            messageText.innerHTML = '🎯 ¡HOY ES LA REUNIÓN! Conéctate puntualmente.';
+            messageText.innerHTML = '🎯 REUNIÓN Conéctate puntualmente.';
         } else if (diffDias === 1) {
             messageDiv.className = 'info-message';
             messageText.innerHTML = `⏳ MAÑANA es la reunión (${formatearFecha(fechaReunion)}). Prepárate.`;
